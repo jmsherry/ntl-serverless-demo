@@ -1,33 +1,38 @@
-const messageDisplay = document.getElementById("message");
-const hwb = document.getElementById("hwb");
-const hnb = document.getElementById("hnb");
+import {
+  // createCar,
+  // readCar,
+  readAllCars,
+  // updateCar,
+  // deleteCar,
+} from "./api/index.js";
 
-const functionsRoot = `.netlify/functions/`;
-const targetFunction = `hello-world`;
-const functionURL = `${functionsRoot}${targetFunction}`;
+const listNode = document.getElementById("list");
 
-const callAPI = async (name) => {
-  const endpointURL = new URL(location);
-  endpointURL.pathname = functionURL;
-  if(name) {
-    endpointURL.searchParams.set('name', name);
+const renderCars = (cars = [], DOMNode = listNode) => {
+  const frag = document.createDocumentFragment();
+  for (const car of cars) {
+    const li = document.createElement("li");
+    const avatar = document.createElement("img");
+    avatar.width = 100;
+    avatar.height = 100;
+    avatar.src = car.avatar_url;
+    li.append(avatar);
+    const span = document.createElement("span");
+    span.textContent = `${car.name} (${car.bhp})`;
+    li.append(span);
+    frag.append(li);
   }
+  listNode.replaceChildren(frag);
+};
+
+const callAPI = async () => {
   try {
-    const response = await fetch(endpointURL.toString());
-    if (!response.ok) throw response;
-    const { message } = await response.json();
-    console.log(message);
-    messageDisplay.textContent = message;
+    const cars = await readAllCars();
+    renderCars(cars);
   } catch (err) {
     alert("Error: Check console");
     console.log(err);
   }
 };
 
-hwb.addEventListener("click", (e) => {
-  callAPI();
-});
-
-hnb.addEventListener("click", (e) => {
-  callAPI("james");
-});
+callAPI();
