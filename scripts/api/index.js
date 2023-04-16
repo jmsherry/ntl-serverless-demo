@@ -1,50 +1,54 @@
-const create = (data) => {
-  return fetch('/.netlify/functions/todos-create', {
+const headers = {
+  "Content-Type": "application/json",
+  // 'Content-Type': 'application/x-www-form-urlencoded',
+};
+
+const functionsRoot = `/.netlify/functions`;
+
+const createCar = async (data) => {
+  return fetch(`${functionsRoot}/create-car`, {
+    method: "POST",
+    headers,
     body: JSON.stringify(data),
-    method: 'POST'
-  }).then(response => {
-    return response.json()
-  })
-}
+  }).then((response) => {
+    return response.json();
+  });
+};
 
-const readAll = () => {
-  return fetch('/.netlify/functions/todos-read-all').then((response) => {
-    return response.json()
-  })
-}
+const readCar = async (id) => {
+  return fetch(`${functionsRoot}/read-car`).then((response) => {
+    return response.json();
+  });
+};
 
-const update = (todoId, data) => {
-  return fetch(`/.netlify/functions/todos-update/${todoId}`, {
+const readAllCars = async () => {
+  return fetch(`${functionsRoot}/read-all-cars`).then((response) => {
+    return response.json();
+  });
+};
+
+const updateCar = async (carId, data) => {
+  return fetch(`${functionsRoot}/update-car/${carId}`, {
+    method: "PUT",
+    headers,
     body: JSON.stringify(data),
-    method: 'POST'
-  }).then(response => {
-    return response.json()
-  })
-}
+  }).then((response) => {
+    return response.json();
+  });
+};
 
-const deleteTodo = (todoId) => {
-  return fetch(`/.netlify/functions/todos-delete/${todoId}`, {
-    method: 'POST',
-  }).then(response => {
-    return response.json()
-  })
-}
+const deleteCar = async (carId) => {
+  return fetch(`${functionsRoot}/delete-car/${carId}`, {
+    method: "DELETE",
+  }).then((response) => {
+    return response.json();
+  });
+};
 
-const batchDeleteTodo = (todoIds) => {
-  return fetch(`/.netlify/functions/todos-delete-batch`, {
-    body: JSON.stringify({
-      ids: todoIds
-    }),
-    method: 'POST'
-  }).then(response => {
-    return response.json()
-  })
-}
-
-export default {
-  create,
-  readAll,
-  update,
-  delete: deleteTodo,
-  batchDelete: batchDeleteTodo
-}
+export {
+  createCar,
+  readCar,
+  readAllCars,
+  updateCar,
+  deleteCar,
+};
