@@ -1,11 +1,11 @@
-const dbConnect = require('../db');
+const dbConnect = require("../db");
 const Car = require("../models/car.model");
 
-const getIDFromURL = (url='') => url.split('/').at(-1);
+const getIDFromURL = (url = "") => url.split("/").at(-1);
 
 const headers = {
-  'Content-Type': 'application/json; charset=utf-8',
-  'Access-Control-Allow-Origin': '*',
+  "Content-Type": "application/json; charset=utf-8",
+  "Access-Control-Allow-Origin": "*",
 };
 
 exports.getCars = async (event, context) => {
@@ -34,9 +34,10 @@ exports.getCars = async (event, context) => {
 };
 
 exports.addCar = async (event, context) => {
-  const carData = JSON.parse(event.body);
-  console.log('carData', carData);
-  if(carData.avatar_url === '') {
+  // const carData = JSON.parse(event.body);
+  const carData = event.body;
+  console.log("carData", carData);
+  if (carData.avatar_url === "") {
     delete carData.avatar_url;
   }
   console.log(carData);
@@ -61,8 +62,9 @@ exports.addCar = async (event, context) => {
 
 exports.updateCar = async (event, context) => {
   const id = getIDFromURL(event.path);
-  const updates = JSON.parse(event.body);
-  console.log('updates', updates);
+  // const updates = JSON.parse(event.body);
+  const updates = event.body;
+  console.log("updates", updates);
   try {
     await dbConnect();
     const result = await Car.updateOne({ _id: id }, updates);

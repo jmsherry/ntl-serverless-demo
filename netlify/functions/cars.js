@@ -1,3 +1,4 @@
+const middleware = require("../../api/middleware");
 const {
   getCars,
   addCar,
@@ -7,9 +8,12 @@ const {
 
 // Docs on event and context https://docs.netlify.com/functions/build/#code-your-function-2
 const handler = async (event, context) => {
-  console.log("event", event);
-  console.log("context", context);
-  console.log("qs params", event.queryStringParameters);
+  // console.log("event", event);
+  // console.log("context", context);
+  // console.log("qs params", event.queryStringParameters);
+
+  middleware.use(event, context);
+
   switch (event.httpMethod) {
     case "GET":
       return getCars(event, context);
