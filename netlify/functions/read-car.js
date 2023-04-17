@@ -19,7 +19,7 @@ const handler = async (event, context) => {
 
   try {
     await dbConnect();
-    const cars = await Car.find({ _id: id });
+    const cars = await Car.findById(id);
     return {
       statusCode: 200,
       body: JSON.stringify(cars),
