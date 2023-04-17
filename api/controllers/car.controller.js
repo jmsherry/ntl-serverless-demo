@@ -12,13 +12,10 @@ exports.getCars = async (event, context) => {
   let query = {};
   const id = getIDFromURL(event.path);
   console.log(id);
-  if (id) {
-    query._id = id;
-  }
 
   try {
     await dbConnect();
-    const cars = await Car.find(query);
+    const cars = await Car.findById(id);
     return {
       statusCode: 200,
       body: JSON.stringify(cars),
